@@ -50,6 +50,7 @@
 #include "f_async_queue.h"
 #include "f_decoder_wrapper.h"
 #include "f_demux_in.h"
+#include "f_enhancement_pair.h"
 #include "f_lavfi.h"
 #include "filter_internal.h"
 
@@ -1406,13 +1407,14 @@ struct mp_decoder_wrapper *mp_decoder_wrapper_create(struct mp_filter *parent,
 
     decf_reset(p->decf);
 
+    struct mp_pin *out_pin;
     if (p->queue) {
         struct mp_filter *f_in =
             mp_async_queue_create_filter(public_f, MP_PIN_OUT, p->queue);
         struct mp_filter *f_out =
             mp_async_queue_create_filter(p->decf, MP_PIN_IN, p->queue);
-        mp_pin_connect(public_f->ppins[0], f_in->pins[0]);
         mp_pin_connect(f_out->pins[0], p->decf->pins[0]);
+        out_pin = f_in->pins[0];
 
         p->dec_thread_valid = true;
         if (mp_thread_create(&p->dec_thread, dec_thread, p)) {
@@ -1420,8 +1422,35 @@ struct mp_decoder_wrapper *mp_decoder_wrapper_create(struct mp_filter *parent,
             goto error;
         }
     } else {
-        mp_pin_connect(public_f->ppins[0], p->decf->pins[0]);
+        out_pin = p->decf->pins[0];
     }
+
+    // Pair BL+EL and output it as one frame.
+    if (p->header->type == STREAM_VIDEO && src->group && !src->dependent_track) {
+        struct sh_stream *el_sh = NULL;
+        for (int i = 0; i < src->group->num_members; i++) {
+            struct sh_stream *m = src->group->members[i];
+            if (m != src && m->dependent_track && m->type == STREAM_VIDEO) {
+                el_sh = m;
+                break;
+            }
+        }
+        if (el_sh) {
+            struct mp_filter *pair = mp_enhancement_pair_create(public_f, el_sh);
+            if (pair) {
+                mp_pin_connect(pair->pins[0], out_pin);
+                out_pin = pair->pins[1];
+                MP_VERBOSE(p, "Enhancement-layer pairing enabled "
+                           "(BL stream %d, EL stream %d).\n",
+                           src->index, el_sh->index);
+            } else {
+                MP_WARN(p, "Failed to set up enhancement-layer pairing; "
+                        "rendering base layer only.\n");
+            }
+        }
+    }
+
+    mp_pin_connect(public_f->ppins[0], out_pin);
 
     public_f_reset(public_f);
 
