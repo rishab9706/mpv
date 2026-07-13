@@ -856,7 +856,19 @@ local function append_hdr(s, hdr, video_out)
                {prefix="Avg:", suffix=" cd/m²", nl="", indent=indent})
     end
 
-    if hdr["max-pq-y"] and hdr["avg-pq-y"] then
+    if hdr["dovi-max-pq"] and hdr["dovi-avg-pq"] then
+        append(s, "", {prefix="Dolby Vision:"})
+        append(s, format("%.2f cd/m² (%.2f%% PQ)", pq_eotf(hdr["dovi-max-pq"]),
+                         hdr["dovi-max-pq"] * 100), {prefix="Max:", nl="",
+                         indent=""})
+        append(s, format("%.2f cd/m² (%.2f%% PQ)", pq_eotf(hdr["dovi-avg-pq"]),
+                         hdr["dovi-avg-pq"] * 100), {prefix="Avg:", nl="",
+                         indent=indent})
+        append(s, format("%.2g cd/m² (%.2f%% PQ)", pq_eotf(hdr["dovi-min-pq"]),
+                         hdr["dovi-min-pq"] * 100), {prefix="Min:", nl="",
+                         indent=indent})
+
+    elseif hdr["max-pq-y"] and hdr["avg-pq-y"] then
         append(s, "", {prefix="PQ(Y):"})
         append(s, format("%.2f cd/m² (%.2f%% PQ)", pq_eotf(hdr["max-pq-y"]),
                          hdr["max-pq-y"] * 100), {prefix="Max:", nl="",
