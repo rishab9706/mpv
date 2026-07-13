@@ -110,8 +110,9 @@ static void inherit_dovi_from_el(struct mp_image *bl, struct mp_image *el)
     bl->params.color.transfer = el->params.color.transfer;
     bl->params.color.hdr.min_luma = el->params.color.hdr.min_luma;
     bl->params.color.hdr.max_luma = el->params.color.hdr.max_luma;
-    bl->params.color.hdr.max_pq_y = el->params.color.hdr.max_pq_y;
-    bl->params.color.hdr.avg_pq_y = el->params.color.hdr.avg_pq_y;
+    bl->params.color.hdr.dovi_max_pq = el->params.color.hdr.dovi_max_pq;
+    bl->params.color.hdr.dovi_avg_pq = el->params.color.hdr.dovi_avg_pq;
+    bl->params.color.hdr.dovi_min_pq = el->params.color.hdr.dovi_min_pq;
 }
 
 static void pair_process(struct mp_filter *f)

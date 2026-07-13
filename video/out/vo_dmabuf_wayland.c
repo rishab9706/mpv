@@ -739,6 +739,7 @@ done:
     struct pl_hdr_metadata *hdr = &p->target_params.color.hdr;
     hdr->scene_max[0] = hdr->scene_max[1] = hdr->scene_max[2] = 0;
     hdr->scene_avg = hdr->max_pq_y = hdr->avg_pq_y = 0;
+    hdr->dovi_max_pq = hdr->dovi_avg_pq = hdr->dovi_min_pq = 0;
     vo->target_params = &p->target_params;
     mp_mutex_unlock(&vo->params_mutex);
 

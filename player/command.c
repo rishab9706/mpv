@@ -2513,6 +2513,7 @@ static int property_imgparams(const struct mp_image_params *p, int action, void 
     bool has_cie_y     = pl_hdr_metadata_contains(hdr, PL_HDR_METADATA_CIE_Y);
     bool has_hdr10     = pl_hdr_metadata_contains(hdr, PL_HDR_METADATA_HDR10);
     bool has_hdr10plus = pl_hdr_metadata_contains(hdr, PL_HDR_METADATA_HDR10PLUS);
+    bool has_dovi      = pl_hdr_metadata_contains(hdr, PL_HDR_METADATA_DOLBYVISION);
     bool custom_prim   = pl_primaries_valid(&hdr->prim) &&
                          !pl_raw_primaries_similar(&hdr->prim, pl_raw_primaries_get(p->color.primaries));
 
@@ -2570,6 +2571,9 @@ static int property_imgparams(const struct mp_image_params *p, int action, void 
         {"scene-avg",   SUB_PROP_FLOAT(hdr->scene_avg),    .unavailable = !has_hdr10plus},
         {"max-pq-y",    SUB_PROP_FLOAT(hdr->max_pq_y),     .unavailable = !has_cie_y},
         {"avg-pq-y",    SUB_PROP_FLOAT(hdr->avg_pq_y),     .unavailable = !has_cie_y},
+        {"dovi-max-pq", SUB_PROP_FLOAT(hdr->dovi_max_pq),  .unavailable = !has_dovi},
+        {"dovi-avg-pq", SUB_PROP_FLOAT(hdr->dovi_avg_pq),  .unavailable = !has_dovi},
+        {"dovi-min-pq", SUB_PROP_FLOAT(hdr->dovi_min_pq),  .unavailable = !has_dovi},
         {"prim-red-x",   SUB_PROP_FLOAT(hdr->prim.red.x),  .unavailable = !custom_prim },
         {"prim-red-y",   SUB_PROP_FLOAT(hdr->prim.red.y),  .unavailable = !custom_prim },
         {"prim-green-x", SUB_PROP_FLOAT(hdr->prim.green.x),.unavailable = !custom_prim },

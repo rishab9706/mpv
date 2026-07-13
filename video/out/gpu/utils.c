@@ -79,6 +79,9 @@ bool gpu_get_auto_param(const struct mp_image *mpi, struct bstr name, double *ou
         {       "scene_avg", params->color.hdr.scene_avg    },
         {        "max_pq_y", params->color.hdr.max_pq_y     },
         {        "avg_pq_y", params->color.hdr.avg_pq_y     },
+        {     "dovi_max_pq", params->color.hdr.dovi_max_pq  },
+        {     "dovi_avg_pq", params->color.hdr.dovi_avg_pq  },
+        {     "dovi_min_pq", params->color.hdr.dovi_min_pq  },
     };
 
     for (int n = 0; n < MP_ARRAY_SIZE(opts); n++) {

@@ -922,7 +922,7 @@ void mp_image_params_restore_dovi_mapping(struct mp_image_params *params)
     if (!pl_color_transfer_is_hdr(params->transfer_orig))
         params->color.hdr = (struct pl_hdr_metadata){0};
     if (params->transfer_orig != PL_COLOR_TRC_PQ)
-        params->color.hdr.max_pq_y = params->color.hdr.avg_pq_y = 0;
+        params->color.hdr.dovi_max_pq = params->color.hdr.dovi_avg_pq = params->color.hdr.dovi_min_pq = 0;
 }
 
 // Set most image parameters, but not image format or size.

@@ -6821,6 +6821,15 @@ them.
 
     ``avg_pq_y``
         Average PQ luminance (in PQ, 0-1).
+    
+    ``dovi_max_pq``
+        Dolby Vision maximum PQ luminance (in PQ, 0-1).
+    
+    ``dovi_avg_pq``
+        Dolby Vision averaged PQ luminance (in PQ, 0-1).
+
+    ``dovi_min_pq``
+        Dolby Vision minimum PQ luminance (in PQ, 0-1).
 
 ``--deband``
     Enable the debanding algorithm. This greatly reduces the amount of visible
