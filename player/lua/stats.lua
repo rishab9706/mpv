@@ -867,8 +867,9 @@ local function append_hdr(s, hdr, video_out)
         append(s, format("%.2g cd/m² (%.2f%% PQ)", pq_eotf(hdr["dovi-min-pq"]),
                          hdr["dovi-min-pq"] * 100), {prefix="Min:", nl="",
                          indent=indent})
+    end
 
-    elseif hdr["max-pq-y"] and hdr["avg-pq-y"] then
+    if hdr["max-pq-y"] and hdr["avg-pq-y"] then
         append(s, "", {prefix="PQ(Y):"})
         append(s, format("%.2f cd/m² (%.2f%% PQ)", pq_eotf(hdr["max-pq-y"]),
                          hdr["max-pq-y"] * 100), {prefix="Max:", nl="",
