@@ -285,8 +285,23 @@ Playback Control
 ``--pause``
     Start the player in paused state.
 
-``--shuffle``
+``--shuffle=<yes|no>``
     Play files in random order.
+    This works by shuffling the playlist at the following points:
+
+      1. At player startup before playback starts. The files specified on the
+         command line are shuffled. Note that the directories and
+         playlist files in these arguments are not expanded at this time, so
+         their contents are not shuffled until the situation 2 mentioned below
+         happens. To expand these lists at startup, use ``--playlist``.
+
+      2. When loading a directory or playlist file, either with ``loadlist``
+         command or by playing a playlist file in the current playlist. The
+         items in the loaded playlist are shuffled before they are added to
+         the current playlist. Other existing items are not shuffled.
+
+      3. When ``--loop-playlist`` is enabled, the player performs a shuffle
+         after looping.
 
 ``--playlist-start=<auto|index>``
     Set which file on the internal playlist to start playback with. The index
@@ -312,6 +327,13 @@ Playback Control
     different demuxers and will not work with this option. They still can be
     played directly, without using this option.
 
+    This option differs from specifying playlist files directly as arguments.
+    The playlists specified by ``--playlist`` are expanded at startup, while
+    playlist files specified directly as arguments are expanded only when the
+    list is being played. Note that this expansion is not recursive, except in
+    the case of ``--playlist=<directory>``, where expansion follows the
+    ``--directory-mode`` option.
+
     By default, mpv doesn't play URLs from playlists which are considered
     unsafe. If you trust the playlist file, you can disable any security checks
     with ``--load-unsafe-playlists``. Because playlists can load other playlist
@@ -334,6 +356,12 @@ Playback Control
         In particular, playlists can contain entries using protocols other than
         local files, such as special protocols like ``avdevice://`` (which are
         inherently unsafe).
+
+``--playlist-inherit-options=<yes|no|current>``
+    Whether the per-file options of a playlist file are inherited by its items
+    when the playlist file is resolved and expanded (default: no). The value
+    ``current`` means that for playlists created by ``--autocreate-playlist``,
+    only the file from which the playlist is created inherits the options.
 
 ``--chapter-merge-threshold=<number>``
     Threshold for merging almost consecutive ordered chapter parts in
@@ -4555,14 +4583,16 @@ Input
     .. admonition:: Example
 
         ``--input-ipc-client=fd://123``
+        ``--input-ipc-client=handle://123``
 
     .. note::
 
         To use this option on Windows, the fd must refer to a wrapped
         (created by ``_open_osfhandle``) named pipe server handle with a client
-        already connected. The named pipe must be created duplex with overlapped
-        IO and inheritable handles. The program communicates with mpv through
-        the client handle.
+        already connected. Alternatively, the Windows HANDLE can be passed by
+        prefixing it with handle:// if mpv inherited it from the parent. The
+        named pipe must be created duplex with overlapped IO and inheritable
+        handles. The program communicates with mpv through the client handle.
 
     .. warning::
 
