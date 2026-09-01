@@ -266,10 +266,12 @@ _vulkan_loader () {
 _vulkan_loader_mark=lib/libvulkan-1.dll.a
 
 _libplacebo () {
-    [ -d libplacebo ] || $gitclone https://code.videolan.org/videolan/libplacebo.git
+    [ -d libplacebo ] || $gitclone https://github.com/rishab9706/libplacebo.git
     builddir libplacebo
     meson setup .. --cross-file "$prefix_dir/crossfile" \
-        -Ddemos=false -D{opengl,d3d11,lcms}=enabled
+        --buildtype release \
+        -Ddemos=false \
+        -D{opengl,d3d11,lcms,libdovi}=enabled
     makeplusinstall
     popd
 }
@@ -317,6 +319,18 @@ _libass () {
 }
 _libass_mark=lib/libass.dll.a
 
+_libdovi () {
+    [ -d dovi_tool ] || $gitclone https://github.com/quietvoid/dovi_tool.git
+    pushd dovi_tool/dolby_vision
+
+    cargo cinstall --release \
+        --target "$RUST_TARGET" \
+        --prefix "$prefix_dir" \
+        --library-type cdylib 
+    popd
+}
+_libdovi_mark=lib/dovi.dll.a
+
 _luajit () {
     [ -d LuaJIT ] || $gitclone https://github.com/LuaJIT/LuaJIT.git
     pushd LuaJIT
@@ -350,7 +364,7 @@ _curl () {
 }
 _curl_mark=lib/libcurl.dll.a
 
-for x in iconv zlib-ng shaderc spirv-cross amf-headers nv-headers dav1d lcms2; do
+for x in iconv zlib-ng shaderc spirv-cross amf-headers nv-headers dav1d lcms2 libdovi; do
     build_if_missing $x
 done
 if [[ "$TARGET" != "i686-"* ]]; then
@@ -379,7 +393,7 @@ rm -rf $build
 
 mpv_args=(
     --cross-file "$prefix_dir/crossfile" $common_args
-    --buildtype debugoptimized
+    --buildtype release
     --force-fallback-for=mujs
     -Dmujs:werror=false
     -Dmujs:default_library=static
@@ -410,6 +424,7 @@ if [ "$2" = pack ]; then
         av*.dll sw*.dll postproc-[0-9]*.dll
         # everything else
         subrandr-[0-9]*.dll lib{ass,freetype,fribidi,harfbuzz,iconv,placebo}-[0-9]*.dll
+        dovi.dll
         lib{curl,shaderc_shared,spirv-cross-c-shared,dav1d,lcms2,zlib1}.dll
     )
     [[ -f vulkan-1.dll ]] && dlls+=(vulkan-1.dll)
