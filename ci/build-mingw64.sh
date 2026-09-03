@@ -266,7 +266,11 @@ _vulkan_loader () {
 _vulkan_loader_mark=lib/libvulkan-1.dll.a
 
 _libplacebo () {
-    [ -d libplacebo ] || $gitclone https://github.com/rishab9706/libplacebo.git
+    local branch=""
+    if [ -n "$LIBPLACEBO_BRANCH" ]; then
+        branch="-b $LIBPLACEBO_BRANCH"
+    fi
+    [ -d libplacebo ] || $gitclone $branch https://github.com/rishab9706/libplacebo.git
     builddir libplacebo
     meson setup .. --cross-file "$prefix_dir/crossfile" \
         --buildtype release \
