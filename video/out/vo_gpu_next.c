@@ -2911,6 +2911,7 @@ static void update_render_options(struct vo *vo)
         [TONE_MAPPING_BT_2446A] = &pl_tone_map_bt2446a,
         [TONE_MAPPING_ST2094_40] = &pl_tone_map_st2094_40,
         [TONE_MAPPING_ST2094_10] = &pl_tone_map_st2094_10,
+        [TONE_MAPPING_ST2094_10_V2] = &pl_tone_map_st2094_10_v2,
     };
 
     const struct pl_gamut_map_function * const gamut_modes[] = {

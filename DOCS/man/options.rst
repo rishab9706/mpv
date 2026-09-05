@@ -7727,6 +7727,8 @@ them.
         Dynamic tone-mapping method specified in SMPTE ST2094-10 Annex B.2.
         Conceptually simpler than ST2094-40, and generally produces worse
         results.
+    st2094-10-v2
+        Modified version of the SMPTE ST2094-10 standard
 
 ``--tone-mapping-param=<value>``
     Set tone mapping parameters. By default, this is set to the special string
