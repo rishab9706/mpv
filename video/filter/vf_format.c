@@ -203,6 +203,8 @@ static void vf_format_process(struct mp_filter *f)
                    sizeof(img->params.color.hdr.scene_max));
             img->params.color.hdr.scene_avg = 0;
             img->params.color.hdr.ootf = (struct pl_hdr_bezier){0};
+            img->params.color.hdr.max_pq_y = 0;
+            img->params.color.hdr.avg_pq_y = 0;
         }
 
         if (priv->opts->min_luma)
