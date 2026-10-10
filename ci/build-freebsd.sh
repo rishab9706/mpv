@@ -20,6 +20,7 @@ meson setup build $common_args \
   -Dlua=enabled \
   -Degl-drm=enabled \
   -Dopenal=enabled \
+  -Dsixel=enabled \
   -Dsndio=enabled \
   -Dvdpau=enabled \
   -Dvulkan=enabled \
