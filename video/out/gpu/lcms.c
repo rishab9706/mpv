@@ -509,6 +509,7 @@ const struct m_sub_options mp_icc_conf = {
             M_RANGE(0, 1000000)},
         {"icc-3dlut-size", OPT_STRING_VALIDATE(size_str, validate_3dlut_size_opt)},
         {"icc-use-luma", OPT_BOOL(icc_use_luma)},
+        {"icc-use-vcgt", OPT_BOOL(icc_use_vcgt)},
         {0}
     },
     .size = sizeof(struct mp_icc_opts),
