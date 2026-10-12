@@ -2723,6 +2723,7 @@ static void update_icc_opts(struct priv *p, const struct mp_icc_opts *opts)
     p->icc_params.size_r = s_r;
     p->icc_params.size_g = s_g;
     p->icc_params.size_b = s_b;
+    p->icc_params.use_vcgt = opts->icc_use_vcgt;
     p->icc_params.cache = p->icc_cache.cache;
 
     if (!opts->profile || !opts->profile[0]) {
