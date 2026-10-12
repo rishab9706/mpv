@@ -7968,6 +7968,12 @@ them.
 ``--icc-use-luma``
     Use ICC profile luminance value. (Only for ``--vo=gpu-next``)
 
+``--icc-use-vcgt``
+    Apply the ICC profile's video card gamma table (VCGT) via a shader LUT
+    before display output, rather than relying on the graphics driver's
+    gamma ramp. This works around drivers that ignore, misapply, or
+    truncate VCGT resolution. (Only for --vo=gpu-next)
+    
 ``--lut=<file>``
     Specifies a custom LUT (in Adobe .cube format) to apply to the colors
     as part of color conversion. The exact interpretation depends on the value
