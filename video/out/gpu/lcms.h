@@ -19,6 +19,7 @@ struct mp_icc_opts {
     int intent;
     int contrast;
     bool icc_use_luma;
+    bool icc_use_vcgt;
 };
 
 struct lut3d {
